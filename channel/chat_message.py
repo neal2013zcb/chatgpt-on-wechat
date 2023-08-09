@@ -1,5 +1,4 @@
-
-""" 
+"""
 本类表示聊天消息，用于对itchat和wechaty的消息进行统一的封装。
 
 填好必填项(群聊6个，非群聊8个)，即可接入ChatChannel，并支持插件，参考TerminalChannel
@@ -20,34 +19,36 @@ other_user_id: 对方的id，如果你是发送者，那这个就是接收者id�
 other_user_nickname: 同上
 
 is_group: 是否是群消息 (群聊必填)
-is_at: 是否被at 
+is_at: 是否被at
 
 - (群消息时，一般会存在实际发送者，是群内某个成员的id和昵称，下列项仅在群消息时存在)
 actual_user_id: 实际发送者id (群聊必填)
 actual_user_nickname：实际发送者昵称
-
-
-
+self_display_name: 自身的展示名，设置群昵称时，该字段表示群昵称
 
 _prepare_fn: 准备函数，用于准备消息的内容，比如下载图片等,
 _prepared: 是否已经调用过准备函数
 _rawmsg: 原始消息对象
 
 """
+
+
 class ChatMessage(object):
     msg_id = None
     create_time = None
-    
+
     ctype = None
     content = None
-    
+
     from_user_id = None
     from_user_nickname = None
     to_user_id = None
     to_user_nickname = None
     other_user_id = None
     other_user_nickname = None
-    
+    my_msg = False
+    self_display_name = None
+
     is_group = False
     is_at = False
     actual_user_id = None
@@ -57,8 +58,7 @@ class ChatMessage(object):
     _prepared = False
     _rawmsg = None
 
-
-    def __init__(self,_rawmsg):
+    def __init__(self, _rawmsg):
         self._rawmsg = _rawmsg
 
     def prepare(self):
@@ -67,7 +67,7 @@ class ChatMessage(object):
             self._prepare_fn()
 
     def __str__(self):
-        return 'ChatMessage: id={}, create_time={}, ctype={}, content={}, from_user_id={}, from_user_nickname={}, to_user_id={}, to_user_nickname={}, other_user_id={}, other_user_nickname={}, is_group={}, is_at={}, actual_user_id={}, actual_user_nickname={}'.format(
+        return "ChatMessage: id={}, create_time={}, ctype={}, content={}, from_user_id={}, from_user_nickname={}, to_user_id={}, to_user_nickname={}, other_user_id={}, other_user_nickname={}, is_group={}, is_at={}, actual_user_id={}, actual_user_nickname={}".format(
             self.msg_id,
             self.create_time,
             self.ctype,
